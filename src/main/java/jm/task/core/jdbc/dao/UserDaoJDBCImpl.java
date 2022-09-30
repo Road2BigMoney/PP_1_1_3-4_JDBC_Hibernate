@@ -18,23 +18,18 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() throws SQLException {
-        PreparedStatement preparedStatement = null;
-        String sql = "CREATE TABLE `Users` (\n" +
-                "  `id` bigint NOT NULL,\n" +
-                "  `name` varchar(45) NOT NULL,\n" +
-                "  `lastName` varchar(45) NOT NULL,\n" +
-                "  `age` tinyint NOT NULL,\n" +
-                "  PRIMARY KEY (`id`)\n" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\n";
+        Statement statement = null;
+        String sql = "CREATE TABLE IF NOT EXISTS `Users` ( `id` bigint NOT NULL AUTO_INCREMENT, `name` varchar(45) NOT NULL, `lastName` varchar(45) NOT NULL,  `age` tinyint NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;";
 
         try {
             connection = Util.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            statement = connection.createStatement();
+            statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
+            if (statement != null) {
+                statement.close();
             }
             if (connection != null) {
                 connection.close();
@@ -46,7 +41,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() throws SQLException {
         PreparedStatement preparedStatement = null;
-        String sql = "DROP Users;";
+        String sql = "DROP TABLE IF EXISTS Users;";
 
         try {
             connection = Util.getConnection();
@@ -64,16 +59,20 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) throws SQLException {
-        User user = new User(name, lastName, age);
+
+
         PreparedStatement preparedStatement = null;
-        String sql = "INSERT INTO Users (id, name, lastName, age) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (name, lastName, age) VALUES( ?, ?, ?);";
 
         try {
+            connection = Util.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, user.getId());
-            preparedStatement.setString(2, user.getName());
-            preparedStatement.setString(3, user.getLastName());
-            preparedStatement.setByte(4, user.getAge());
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setByte(3, age);
+            preparedStatement.executeUpdate();
+            Statement statement = connection.createStatement();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
