@@ -3,6 +3,8 @@ package jm.task.core.jdbc;
 import com.mysql.cj.MysqlConnection;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.service.UserService;
+import jm.task.core.jdbc.service.UserServiceImpl;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -14,18 +16,19 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         // реализуйте алгоритм здесь
-        UserDaoJDBCImpl userDaoJDBC = new UserDaoJDBCImpl();
-        userDaoJDBC.createUsersTable();
-        userDaoJDBC.saveUser("Робот","Деревянный", (byte) 17);
-        userDaoJDBC.saveUser("Робот","Оловянный", (byte) 18);
-        userDaoJDBC.saveUser("Робот","Стеклянный", (byte) 29);
-        userDaoJDBC.saveUser("Робот","Классический", (byte) 100);
-        List<User> users = userDaoJDBC.getAllUsers();
+        UserService userService = new UserServiceImpl();
+        userService.createUsersTable();
+        userService.saveUser("Робот","Деревянный", (byte) 17);
+        userService.saveUser("Робот","Оловянный", (byte) 18);
+        userService.saveUser("Робот","Стеклянный", (byte) 29);
+        userService.saveUser("Робот","Классический", (byte) 100);
+        userService.removeUserById(2);
+        List<User> users = userService.getAllUsers();
         for (User user : users) {
             System.out.println(user);
         }
-        userDaoJDBC.cleanUsersTable();
-        userDaoJDBC.dropUsersTable();
+        userService.cleanUsersTable();
+        userService.dropUsersTable();
 
     }
 
