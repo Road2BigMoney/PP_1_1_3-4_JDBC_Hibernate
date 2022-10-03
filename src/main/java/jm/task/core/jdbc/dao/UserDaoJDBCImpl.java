@@ -28,6 +28,11 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Rollback Exception!");
+            }
         }
 
 
@@ -44,6 +49,11 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Rollback Exception!");
+            }
         }
     }
 
@@ -55,7 +65,6 @@ public class UserDaoJDBCImpl implements UserDao {
 
         try {
             connection = Util.getConnection();
-            connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
@@ -65,6 +74,11 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Rollback Exception!");
+            }
         }
     }
 
@@ -77,6 +91,11 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Rollback Exception!");
+            }
         }
     }
 
@@ -99,6 +118,11 @@ public class UserDaoJDBCImpl implements UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Rollback Exception!");
+            }
         }
         return users;
     }
@@ -113,6 +137,11 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Rollback Exception!");
+            }
         }
     }
 }
