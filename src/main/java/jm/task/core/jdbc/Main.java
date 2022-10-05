@@ -5,6 +5,9 @@ import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -27,9 +30,12 @@ public class Main {
         for (User user : users) {
             System.out.println(user);
         }
-        userService.cleanUsersTable();
+//        userService.cleanUsersTable();
         userService.dropUsersTable();
-
+        users = userService.getAllUsers();
+        for (User user : users) {
+            System.out.println(user);
+        }
 
     }
 
